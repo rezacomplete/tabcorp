@@ -48,7 +48,7 @@ public class TransactionController {
     }
 
 
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/report/customer/{id}")
     public Mono<ResponseEntity<Integer>> getTotalCostPerCustomer(@PathVariable Long id) {
         return service.getTotalCostPerCustomer(id)
@@ -57,7 +57,7 @@ public class TransactionController {
     }
 
 
-    //    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/report/product/{code}")
     public Mono<ResponseEntity<Integer>> getTotalCostPerProduct(@PathVariable String code) {
         return service.getTotalCostPerProduct(code)
@@ -66,7 +66,7 @@ public class TransactionController {
     }
 
 
-    //    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/report/australian-customers")
     public Mono<ResponseEntity<Long>> getCountAustralianCustomerTransactions() {
         return service.getCountByCustomerLocationAustralia()
