@@ -88,7 +88,7 @@ class TransactionControllerTest {
     @Test
     void testCreateTransactionWithAdminRoleWithNonExistentProduct() {
         TransactionRequest request = new TransactionRequest();
-        request.setTransactionTime("2026-04-25T12:00:00");
+        request.setTransactionTime(LocalDateTime.now().plusMinutes(5).toString());
         request.setCustomerId(10001L);
         request.setQuantity(2);
         request.setProductCode("PRODUCT_0011");
@@ -105,7 +105,7 @@ class TransactionControllerTest {
     @Test
     void testCreateTransactionWithNoAuthShouldReturn401() {
         TransactionRequest request = new TransactionRequest();
-        request.setTransactionTime("2026-04-25T12:00:00");
+        request.setTransactionTime(LocalDateTime.now().plusMinutes(5).toString());
         request.setCustomerId(10001L);
         request.setQuantity(2);
         request.setProductCode("PRODUCT_001");
@@ -120,7 +120,7 @@ class TransactionControllerTest {
 
     @Test
     void testGetTotalCostPerCustomerWithAdminRole() {
-        transactionRepository.save(new Transaction(null, LocalDateTime.parse("2026-04-25T12:00:00"), 2, 100, 10001L, "PRODUCT_001")).block();
+        transactionRepository.save(new Transaction(null, LocalDateTime.now().plusMinutes(5), 2, 100, 10001L, "PRODUCT_001")).block();
 
         webTestClient.get()
                 .uri("/transactions/report/customer/10001")
@@ -141,7 +141,7 @@ class TransactionControllerTest {
 
     @Test
     void testGetTotalCostPerProductWithAdminRole() {
-        transactionRepository.save(new Transaction(null, LocalDateTime.parse("2026-04-25T12:00:00"), 2, 100, 10001L, "PRODUCT_001")).block();
+        transactionRepository.save(new Transaction(null, LocalDateTime.now().plusMinutes(5), 2, 100, 10001L, "PRODUCT_001")).block();
 
         webTestClient.get()
                 .uri("/transactions/report/product/PRODUCT_001")
@@ -162,7 +162,7 @@ class TransactionControllerTest {
 
     @Test
     void getCountAustralianCustomerTransactionsWithAdminRole() {
-        transactionRepository.save(new Transaction(null, LocalDateTime.parse("2026-04-25T12:00:00"), 2, 100, 10001L, "PRODUCT_001")).block();
+        transactionRepository.save(new Transaction(null, LocalDateTime.now().plusMinutes(5), 2, 100, 10001L, "PRODUCT_001")).block();
 
         webTestClient.get()
                 .uri("/transactions/report/australian-customers")

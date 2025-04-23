@@ -4,7 +4,6 @@ import com.example.tabcorp.exception.InvalidDataException;
 import com.example.tabcorp.service.TransactionService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,8 +16,11 @@ import java.security.Principal;
 @RequestMapping("/transactions")
 public class TransactionController {
 
-    @Autowired
-    private TransactionService service;
+    private final TransactionService service;
+
+    public TransactionController(TransactionService service) {
+        this.service = service;
+    }
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 

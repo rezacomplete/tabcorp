@@ -9,7 +9,6 @@ import com.example.tabcorp.exception.ResourceNotFoundException;
 import com.example.tabcorp.repository.CustomerRepository;
 import com.example.tabcorp.repository.ProductRepository;
 import com.example.tabcorp.repository.TransactionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -22,47 +21,15 @@ public class TransactionService {
     private static final String ACTIVE = "Active";
     private static final int MAX_TOTAL_ACCEPTED_COST = 5000;
 
-    @Autowired
-    private TransactionRepository transactionRepository;
+    private final TransactionRepository transactionRepository;
+    private final CustomerRepository customerRepository;
+    private final ProductRepository productRepository;
 
-    @Autowired
-    private CustomerRepository customerRepository;
-
-    @Autowired
-    private ProductRepository productRepository;
-
-//    public Long saveTransaction(TransactionRequest request) {
-//        LocalDateTime time = LocalDateTime.parse(request.getTransactionTime());
-//        if (time.isBefore(LocalDateTime.now())) {
-//            throw new InvalidDataException("Date must not be in the past");
-//        }
-//
-//        Customer customer = customerRepository.findById(request.getCustomerId()).orElseThrow(
-//                () -> new ResourceNotFoundException("Customer not found")
-//        );
-//
-//        Product product = productRepository.findById(request.getProductCode()).orElseThrow(
-//                () -> new ResourceNotFoundException("Product not found")
-//        );
-//
-//        if (!ACTIVE.equalsIgnoreCase(product.getStatus())) {
-//            throw new RuntimeException("Product must be active");
-//        }
-//
-//        int total = product.getCost() * request.getQuantity();
-//        if (total > MAX_TOTAL_ACCEPTED_COST) {
-//            throw new InvalidDataException("Total cost must not exceed " + MAX_TOTAL_ACCEPTED_COST);
-//        }
-//
-//        Transaction transaction = new Transaction();
-//        transaction.setTransactionTime(time);
-//        transaction.setCustomer(customer);
-//        transaction.setProduct(product);
-//        transaction.setQuantity(request.getQuantity());
-//        transaction.setTotalCost(total);
-//
-//        return transactionRepository.save(transaction).getId();
-//    }
+    public TransactionService(TransactionRepository transactionRepository, CustomerRepository customerRepository, ProductRepository productRepository) {
+        this.transactionRepository = transactionRepository;
+        this.customerRepository = customerRepository;
+        this.productRepository = productRepository;
+    }
 
     public Mono<Integer> getTotalCostPerCustomer(Long customerId) {
         return transactionRepository.getTotalCostPerCustomer(customerId);
@@ -85,7 +52,7 @@ public class TransactionService {
         return customerRepository.findById(request.getCustomerId())
                 .switchIfEmpty(Mono.error(new ResourceNotFoundException("Customer not found")))
                 .zipWith(productRepository.findById(request.getProductCode())
-                        .switchIfEmpty(Mono.error(new ResourceNotFoundException("Product not found"))))
+                .switchIfEmpty(Mono.error(new ResourceNotFoundException("Product not found"))))
                 .flatMap(tuple -> {
                     Customer customer = tuple.getT1();
                     Product product = tuple.getT2();
