@@ -23,7 +23,7 @@ curl -X POST http://localhost:8080/transactions \
   -u admin:password \
   -H "Content-Type: application/json" \
   -d '{
-    "transactionTime": "2025-04-25T12:00:00",
+    "transactionTime": "2026-04-25T12:00:00",
     "customerId": 10001,
     "quantity": 2,
     "productCode": "PRODUCT_001"
@@ -36,7 +36,7 @@ curl -X POST http://localhost:8080/transactions \
   -u admin:password \
   -H "Content-Type: application/octet-stream" \
   --data-binary '{
-    "transactionTime": "2025-04-25T12:00:00",
+    "transactionTime": "2026-04-25T12:00:00",
     "customerId": 10001,
     "quantity": 2,
     "productCode": "PRODUCT_001"
