@@ -20,6 +20,8 @@ public class SecurityConfig {
     public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http) {
         http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
+
+                // Configures HTTP headers to allow accessing the H2 console in a browser
                 .headers(headers -> headers
                         .frameOptions(frame -> frame.mode(XFrameOptionsServerHttpHeadersWriter.Mode.SAMEORIGIN))
                 )
@@ -27,6 +29,8 @@ public class SecurityConfig {
                         .pathMatchers("/h2-console/**").permitAll()
                         .anyExchange().authenticated()
                 )
+
+                // HTTP basic authentication
                 .httpBasic(Customizer.withDefaults());
 
         return http.build();
